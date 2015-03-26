@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class NioSayHelloEventHandler implements NioEventHandler {
 	private static final int TOKEN_NUM = 2;
@@ -50,7 +48,7 @@ public class NioSayHelloEventHandler implements NioEventHandler {
 				i++;
 			}
 			
-			sayHello(param);
+			// sayHello(param);
 			
 			try {
 				buffer.clear();

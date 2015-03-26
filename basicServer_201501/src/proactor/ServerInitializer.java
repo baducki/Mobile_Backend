@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 public class ServerInitializer {
 	
 	private static int PORT = 5000;
-	private static int threadPoolSize = 8;
-	private static int initialSize = 4;
-	private static int backlog = 50;
+	private static int THREADPOOLSIZE = 100;
+	private static int INITIALSIZE = 100;
+	private static int BACKLOG = 1024;
 
 	public void startServer() {
 		System.out.println("SERVER START!");
@@ -25,13 +25,13 @@ public class ServerInitializer {
 		handleMap.put(sayHelloHandler.gethandler(), sayHelloHandler);
 		handleMap.put(updateProfileHandler.gethandler(), updateProfileHandler);
 		
-		ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
+		ExecutorService executor = Executors.newFixedThreadPool(THREADPOOLSIZE);
 		
 		try {
-			AsynchronousChannelGroup group = AsynchronousChannelGroup.withCachedThreadPool(executor, initialSize);
+			AsynchronousChannelGroup group = AsynchronousChannelGroup.withCachedThreadPool(executor, INITIALSIZE);
 			
 			AsynchronousServerSocketChannel listener = AsynchronousServerSocketChannel.open(group);
-			listener.bind(new InetSocketAddress(PORT), backlog);
+			listener.bind(new InetSocketAddress(PORT), BACKLOG);
 			
 			listener.accept(listener, new Dispatcher(handleMap));
 			

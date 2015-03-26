@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class Demultiplexer implements CompletionHandler<Integer, ByteBuffer> {
 
@@ -19,9 +17,9 @@ public class Demultiplexer implements CompletionHandler<Integer, ByteBuffer> {
 	
 	@Override
 	public void completed(Integer result, ByteBuffer buffer) {
-		
+
 		if (result == -1) {
-			try {
+			try {	
 				channel.close();
 			} catch (IOException e) {
 				e.printStackTrace();
