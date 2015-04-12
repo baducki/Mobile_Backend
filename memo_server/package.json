@@ -1,0 +1,22 @@
+{
+  "name": "mobileBackend",
+  "version": "1.0.0",
+  "description": "Memo Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "memo"
+  ],
+  "author": "YG",
+  "license": "ISC",
+  "dependencies": {
+    "formidable": "^1.0.17",
+    "mime": "^1.3.4",
+    "mongodb": "^2.0.27",
+    "nedb": "^1.1.2",
+    "util": "^0.10.3"
+  }
+}
