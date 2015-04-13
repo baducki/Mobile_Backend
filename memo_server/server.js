@@ -2,23 +2,22 @@
 
 var http = require("http"),
 	route = require("./route.js"),
-	url = require("url"),
 	formidable = require('formidable');
 
 function onRequest(req, res) {
 	var body = "";
-	var form;
+	var form = {};
 	
-	req.on("data", function(chunk) {
-		body += chunk;
-	});
-	
-	if (req.url == '/memo' && req.method.toUpperCase() == 'POST') {
+	if (req.method.toUpperCase() == 'POST') {
 		form = new formidable.IncomingForm();
 		route.route(req, res, form);
 	}
 
 	else {
+		req.on("data", function(chunk) {
+			body += chunk;
+		});
+		
 		req.on('end', function() {
 			route.route(req, res, body);
 		});

@@ -1,21 +1,18 @@
 /* memoHandler.js */
 
-var MongoDb = require("mongodb"),
-	MongoServer = new MongoDb.Server("localhost", 27017, {}),
-	db = new MongoDb.Db("users", MongoServer),
+var mongodb = require("mongodb"),
+	server = new mongodb.Server("localhost", 27017, {});
+	db = new mongodb.Db("users", server, {w: 1});
 	collection = db.collection("memo"),
 	url = require("url"),
-	fs = require("fs"),
 	querystring = require("querystring"),
-    formidable = require('formidable');
+    formidable = require("formidable");
 	
 var UPLOAD_FOLDER = "./upload/";
-
 
 exports.create = function(req, res, body) {
 
 	var files = [],
-    	fields = [],
     	resultPaths = [],
     	content = {};
 
@@ -25,14 +22,11 @@ exports.create = function(req, res, body) {
 	body.multiple="multiple";
 	
 	body.on('field', function(field, value) {
-	        fields.push([field, value]);
+			content[field] = value;
 	    })
 	    .on('file', function(field, file) {
 	        files.push([field, file]);
 	    })
-    	.on('fileBegin', function(name, file) {
-			file.path = body.uploadDir + file.name;
-		})
 	    .on('progress', function(bytesReceived, bytesExpected) {
 	        console.log('progress: ' + bytesReceived + '/' + bytesExpected);
 	    })
@@ -42,22 +36,16 @@ exports.create = function(req, res, body) {
 	        for (var field in files) {
 	            resultPaths.push(files[field][1].path);
 	        }
-			        
-	        for (var field in fields) {
-	            if (fields[field][0] == "author") content.author = fields[field][1];
-	            else if (fields[field][0] == "memo") content.memo = fields[field][1];
-	        }
-	
+
 	        content.date = new Date();
 	        content.file = resultPaths;
-	
-	        console.log(JSON.stringify(content));
 	
 	        db.open(function(err) {
 	            if (err) throw err;
 	            collection.insert(content, function(err, data) {
 	                if (err) throw err;
 	                console.log("insert Data: ", data.result);
+	                console.log(JSON.stringify(content))
 	                db.close();
 	            });
 	        });
